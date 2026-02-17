@@ -1,133 +1,195 @@
-# Browser - A Simple Web Browser in Go
+<div align="center">
 
-[![CI](https://github.com/lukehoban/browser/actions/workflows/ci.yml/badge.svg)](https://github.com/lukehoban/browser/actions/workflows/ci.yml)
-[![Go Report Card](https://goreportcard.com/badge/github.com/lukehoban/browser)](https://goreportcard.com/report/github.com/lukehoban/browser)
+# 🌐 Browser
 
-A simple web browser implementation in Go, focusing on static HTML and CSS 2.1 compliance. This project aims to stay close to W3C specifications and provide a clean, well-organized codebase for educational purposes.
+**A simple web browser implementation in Go**
 
-## Features
+[![CI](https://github.com/cschleiden/browser/actions/workflows/ci.yml/badge.svg)](https://github.com/cschleiden/browser/actions/workflows/ci.yml)
+[![Go Report Card](https://goreportcard.com/badge/github.com/cschleiden/browser)](https://goreportcard.com/report/github.com/cschleiden/browser)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-- HTML parsing with DOM tree construction
-- CSS 2.1 parsing and style computation
-- Visual formatting model (box model, block layout)
-- **High-quality text rendering** with Go fonts (proportional sans-serif)
-- Font styling support (bold, italic, underline, size)
-- Image rendering (PNG, JPEG, GIF, SVG support)
-- **Data URLs**: Support for RFC 2397 data URLs (base64 and URL-encoded)
-- Background and border rendering
-- PNG image output
-- **Network support**: Load pages via HTTP/HTTPS
-- **External CSS**: Fetch and apply stylesheets from `<link>` tags
-- **Network images**: Load images from remote URLs
-- **WebAssembly**: Run the browser entirely in a web client
+*Parse HTML & CSS, compute styles, calculate layout, and render to PNG – all from scratch in Go*
 
-## Project Structure
-
-```
-browser/
-├── cmd/
-│   ├── browser/      # Main CLI browser application
-│   └── browser-wasm/ # WebAssembly entry point
-├── html/            # HTML tokenization and parsing
-├── css/             # CSS parsing
-├── dom/             # DOM tree structure
-├── style/           # Style computation and cascade
-├── layout/          # Layout engine (visual formatting model)
-├── render/          # Rendering engine
-├── wasm/            # WebAssembly demo page
-└── test/            # Test files and fixtures
-```
-
-## Specifications
-
-This browser implementation follows these W3C specifications:
-
-- **HTML5**: Tokenization and parsing ([HTML5 §12](https://html.spec.whatwg.org/multipage/parsing.html))
-- **CSS 2.1**: Syntax, selectors, cascade, box model, and visual formatting
-  - [CSS 2.1 §4 Syntax](https://www.w3.org/TR/CSS21/syndata.html)
-  - [CSS 2.1 §5 Selectors](https://www.w3.org/TR/CSS21/selector.html)
-  - [CSS 2.1 §6 Cascade](https://www.w3.org/TR/CSS21/cascade.html)
-  - [CSS 2.1 §8 Box Model](https://www.w3.org/TR/CSS21/box.html)
-  - [CSS 2.1 §9 Visual Formatting Model](https://www.w3.org/TR/CSS21/visuren.html)
-- **RFC 2397**: The "data" URL scheme for inline resources
-
-## Quick Start
-
-### Building
-
-```bash
-go build ./cmd/browser
-```
-
-### Running
-
-```bash
-# Render local HTML file to PNG
-./browser -output output.png test/styled.html
-
-# Load and render a web page from URL
-./browser -output hn.png https://news.ycombinator.com/
-
-# View layout tree without rendering (text output)
-./browser test/styled.html
-
-# Custom viewport size
-./browser -output output.png -width 1024 -height 768 test/hackernews.html
-```
-
-## Screenshots
-
-### Font Rendering
-
-The browser uses the [Go fonts](https://blog.golang.org/go-fonts) - high-quality, proportional, sans-serif fonts designed for the Go project. These fonts are embedded in the binary and provide excellent readability with support for bold, italic, and various sizes.
-
-![Font Comparison](./font_comparison_screenshot.png)
-
-### Test Case Rendering
-
-Example of styled HTML with borders, colors, and text formatting:
-
-![Test Case Rendering](./test_case_screenshot.png)
-
-### Hacker News
-
-Latest Hacker News render (1024x768):
+[**Try the Live Demo →**](https://cschleiden.github.io/browser/)
 
 ![Hacker News Rendering](./hackernews_screenshot.png)
 
-### Testing
+</div>
+
+---
+
+## ✨ Features
+
+| Category | Features |
+|----------|----------|
+| **HTML** | DOM tree construction, character entity decoding, void elements |
+| **CSS** | CSS 2.1 parsing, selectors (element, class, ID, descendant), cascade & specificity |
+| **Layout** | Box model, block formatting, table layout with auto column sizing |
+| **Rendering** | High-quality text with Go fonts, borders, backgrounds, images (PNG/JPEG/GIF/SVG) |
+| **Network** | HTTP/HTTPS page loading, external stylesheets, remote images |
+| **Modern** | WebAssembly support – run entirely in the browser! |
+
+## 🚀 Quick Start
+
+### Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/cschleiden/browser.git
+cd browser
+
+# Build the browser
+go build ./cmd/browser
+```
+
+### Usage
+
+```bash
+# Render a web page to PNG
+./browser -output hackernews.png https://news.ycombinator.com/
+
+# Render a local HTML file
+./browser -output output.png test/styled.html
+
+# Custom viewport size
+./browser -output output.png -width 1024 -height 768 test/hackernews.html
+
+# View layout tree (text output, no image)
+./browser test/styled.html
+```
+
+### Run Tests
 
 ```bash
 go test ./...
 ```
 
-## WebAssembly
+## 🌐 WebAssembly Demo
 
-The browser can be compiled to WebAssembly and run entirely in a web browser. A live demo is available at **https://lukehoban.github.io/browser/** and is automatically deployed via GitHub Actions.
+The browser compiles to WebAssembly and runs entirely in your web browser!
 
-To build locally:
+👉 **[Try the Live Demo](https://cschleiden.github.io/browser/)**
+
+To build and run locally:
+
 ```bash
 GOOS=js GOARCH=wasm go build -o wasm/browser.wasm ./cmd/browser-wasm
 cd wasm && python3 -m http.server 8080
+# Open http://localhost:8080
 ```
 
-See [wasm/README.md](wasm/README.md) for more details.
+## 📸 Screenshots
 
-## Documentation
+<table>
+<tr>
+<td width="50%">
 
-- **[MILESTONES.md](MILESTONES.md)** - Implementation milestones and progress tracking
-- **[IMPLEMENTATION.md](IMPLEMENTATION.md)** - Detailed implementation summary and architecture
-- **[TESTING.md](TESTING.md)** - Testing strategy and public test suite integration
+### Font Rendering
+High-quality proportional sans-serif fonts with bold, italic, and underline support.
 
-## Current Status
+![Font Comparison](./font_comparison_screenshot.png)
 
-✅ Milestones 1-7 Complete: Foundation, HTML Parsing, CSS Parsing, Style Computation, Layout Engine, Rendering, Image Rendering  
-✅ Milestone 9 Complete: Network Support (HTTP/HTTPS, external CSS, remote images)  
-✅ Milestone 9.5 Complete: Data URL Support (RFC 2397, base64 & URL-encoded inline resources)  
-🔄 Milestone 8 In Progress: Testing & Validation (81.8% WPT pass rate)
+</td>
+<td width="50%">
 
-See [MILESTONES.md](MILESTONES.md) for detailed progress and known limitations.
+### Styled HTML
+Borders, colors, text formatting, and box model layout.
 
-## License
+![Test Case Rendering](./test_case_screenshot.png)
 
-MIT
+</td>
+</tr>
+</table>
+
+## 🏗️ Architecture
+
+The browser follows a classic rendering pipeline:
+
+```
+HTML Input → Tokenization → DOM Tree → Style Computation → Layout → Rendering → PNG
+                                 ↓
+                          CSS Parsing
+```
+
+### Project Structure
+
+```
+browser/
+├── cmd/
+│   ├── browser/         # CLI application
+│   └── browser-wasm/    # WebAssembly entry point
+├── html/                # HTML tokenization & parsing
+├── css/                 # CSS tokenization & parsing
+├── dom/                 # DOM tree structure
+├── style/               # Selector matching & cascade
+├── layout/              # Box model & visual formatting
+├── render/              # Canvas rendering & PNG output
+├── font/                # Font loading (Go fonts)
+├── svg/                 # SVG parsing & rasterization
+├── wasm/                # WebAssembly demo
+└── test/                # Test fixtures
+```
+
+## 📋 Specifications
+
+This implementation follows W3C specifications:
+
+| Spec | Coverage |
+|------|----------|
+| [HTML5 §12 Parsing](https://html.spec.whatwg.org/multipage/parsing.html) | Tokenization, tree construction, void elements |
+| [CSS 2.1 §4 Syntax](https://www.w3.org/TR/CSS21/syndata.html) | Tokenization, values, colors |
+| [CSS 2.1 §5 Selectors](https://www.w3.org/TR/CSS21/selector.html) | Element, class, ID, descendant |
+| [CSS 2.1 §6 Cascade](https://www.w3.org/TR/CSS21/cascade.html) | Specificity, inheritance |
+| [CSS 2.1 §8 Box Model](https://www.w3.org/TR/CSS21/box.html) | Content, padding, border, margin |
+| [CSS 2.1 §9 Visual Formatting](https://www.w3.org/TR/CSS21/visuren.html) | Block layout, inline layout |
+| [CSS 2.1 §17 Tables](https://www.w3.org/TR/CSS21/tables.html) | Table layout, colspan |
+| [RFC 2397](https://datatracker.ietf.org/doc/html/rfc2397) | Data URLs (base64, URL-encoded) |
+
+## 📊 Current Status
+
+| Milestone | Status | Description |
+|-----------|--------|-------------|
+| Foundation | ✅ | Project setup, architecture |
+| HTML Parsing | ✅ | Tokenization, DOM tree, entities |
+| CSS Parsing | ✅ | Selectors, declarations, cascade |
+| Style Computation | ✅ | Matching, specificity, inheritance |
+| Layout Engine | ✅ | Box model, block & table layout |
+| Rendering | ✅ | Text, colors, borders, backgrounds |
+| Image Rendering | ✅ | PNG, JPEG, GIF, SVG support |
+| Network Support | ✅ | HTTP/HTTPS, external CSS, remote images |
+| Data URLs | ✅ | RFC 2397 inline resources |
+| WebAssembly | ✅ | Browser-based rendering |
+| Testing | ✅ | 92.3% WPT pass rate |
+
+## 📚 Documentation
+
+- **[MILESTONES.md](MILESTONES.md)** – Implementation progress & roadmap
+- **[IMPLEMENTATION.md](IMPLEMENTATION.md)** – Architecture & design decisions
+- **[TESTING.md](TESTING.md)** – Test strategy & WPT integration
+
+## 🤝 Contributing
+
+Contributions are welcome! Here's how you can help:
+
+1. **Fork** the repository
+2. **Create** a feature branch (`git checkout -b feature/amazing-feature`)
+3. **Commit** your changes (`git commit -m 'Add amazing feature'`)
+4. **Push** to the branch (`git push origin feature/amazing-feature`)
+5. **Open** a Pull Request
+
+Please ensure your code:
+- Passes all tests (`go test ./...`)
+- Follows Go conventions (`go fmt`, `go vet`)
+- Includes tests for new functionality
+
+## 📄 License
+
+This project is licensed under the MIT License – see the [LICENSE](LICENSE) file for details.
+
+---
+
+<div align="center">
+
+**Built with ❤️ in Go**
+
+</div>
